@@ -20,7 +20,10 @@ class AssignmentInvitation < ActiveRecord::Base
       return assignment_repo if assignment_repo.present?
     end
 
-    AssignmentRepo.find_or_create_by!(assignment: assignment, user: invitee)
+    assignment_repo = AssignmentRepo.find_by(assignment: assignment, user: invitee)
+    return assignment_repo if assignment_repo.present?
+
+    AssignmentRepoBuilder.new(assignment: assignment, user: invitee).build
   end
 
   def title
