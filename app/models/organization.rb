@@ -19,16 +19,12 @@ class Organization < ActiveRecord::Base
 
   validates :slug, uniqueness: true
 
-  # Public
-  #
-  def all_assignments
-    assignments + group_assignments
+  def access_token
+    @access_token ||= users.sample.access_token
   end
 
-  # Public
-  #
-  def github_client
-    users.sample.github_client
+  def all_assignments
+    assignments + group_assignments
   end
 
   def slugify

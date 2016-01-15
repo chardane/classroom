@@ -3,13 +3,14 @@ module GitHub
   class Forbidden < Error; end
   class NotFound < Error; end
 
-  def application_github_client
-    Octokit::Client.new(client_id: Rails.application.secrets.github_client_id,
-                        client_secret: Rails.application.secrets.github_client_secret)
+  def application_github_client_id
+    Rails.application.secrets.github_client_id
   end
 
-  # Public
-  #
+  def application_github_client_secret
+    Rails.application.secrets.github_client_secret
+  end
+
   # rubocop:disable Metrics/CyclomaticComplexity
   def with_error_handling
     yield

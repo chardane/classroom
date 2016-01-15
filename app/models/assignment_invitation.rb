@@ -14,6 +14,10 @@ class AssignmentInvitation < ActiveRecord::Base
 
   after_initialize :assign_key
 
+  def assignment_title
+    assignment.title
+  end
+
   def redeem_for(invitee)
     if (repo_access = RepoAccess.find_by(user: invitee, organization: organization))
       assignment_repo = AssignmentRepo.find_by(assignment: assignment, repo_access: repo_access)
@@ -23,11 +27,7 @@ class AssignmentInvitation < ActiveRecord::Base
     assignment_repo = AssignmentRepo.find_by(assignment: assignment, user: invitee)
     return assignment_repo if assignment_repo.present?
 
-    AssignmentRepoBuilder.new(assignment: assignment, user: invitee).build
-  end
-
-  def title
-    assignment.title
+    Builders::AssignmentRepoBuilder.new(assignment: assignment, user: invitee).build
   end
 
   def to_param

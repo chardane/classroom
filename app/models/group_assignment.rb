@@ -1,5 +1,4 @@
 class GroupAssignment < ActiveRecord::Base
-  include GitHubPlan
   include Sluggable
 
   update_index('stafftools#group_assignment') { self }

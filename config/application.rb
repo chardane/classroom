@@ -66,5 +66,8 @@ module Classroom
         end
       end
     end
+
+    # autoload certain lib files
+    config.autoload_paths << Rails.root.join('lib/git_hub.rb')
   end
 end

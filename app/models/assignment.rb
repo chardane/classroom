@@ -1,5 +1,4 @@
 class Assignment < ActiveRecord::Base
-  include GitHubPlan
   include Sluggable
 
   update_index('stafftools#assignment') { self }
@@ -28,6 +27,8 @@ class Assignment < ActiveRecord::Base
 
   alias_attribute :invitation, :assignment_invitation
 
+  before_destroy :destroy_assignment_repos
+
   def private?
     !public_repo
   end
@@ -41,6 +42,10 @@ class Assignment < ActiveRecord::Base
   end
 
   private
+
+  def destroy_assignment_repos
+    assignment_repos.each { |ar| Builders::AssignmentRepoBuilder.destroy(ar) }
+  end
 
   def uniqueness_of_slug_across_organization
     return unless GroupAssignment.where(slug: slug, organization: organization).present?
